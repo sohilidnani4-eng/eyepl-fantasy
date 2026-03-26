@@ -27,6 +27,9 @@ export default function Home() {
         <button className="btn btn-secondary" onClick={() => navigate("/join")}>
           Join Group
         </button>
+        <button className="btn btn-secondary" onClick={() => navigate("/demo")} style={{ borderStyle: "dashed" }}>
+          Try Demo Draft
+        </button>
         {groups.length > 0 && (
           <button className="btn btn-secondary" onClick={() => navigate("/my-picks")}>
             My Picks

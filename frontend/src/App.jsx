@@ -8,6 +8,7 @@ import LiveDraft from "./screens/LiveDraft";
 import Scoring from "./screens/Scoring";
 import MatchResult from "./screens/MatchResult";
 import MyPicks from "./screens/MyPicks";
+import Demo from "./screens/Demo";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/match/:matchId/score" element={<Scoring />} />
         <Route path="/match/:matchId/result" element={<MatchResult />} />
         <Route path="/my-picks" element={<MyPicks />} />
+        <Route path="/demo" element={<Demo />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>

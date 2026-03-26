@@ -7,6 +7,22 @@ import Header from "../components/Header";
 
 const ROLES = ["All", "Batter", "Batter/WK", "All-Rounder", "Bowler"];
 
+// Look up cricbuzz scores URL by team names from the IPL schedule
+async function lookupCricbuzzUrl(teamA, teamB) {
+  try {
+    const api = (await import("../api")).default;
+    const res = await api.get("/ipl-matches");
+    const match = res.data.find(
+      (m) =>
+        (m.team_a === teamA && m.team_b === teamB) ||
+        (m.team_a === teamB && m.team_b === teamA)
+    );
+    return match?.cricbuzz_scores_url || null;
+  } catch {
+    return null;
+  }
+}
+
 function getSavedGroups() {
   try { return JSON.parse(localStorage.getItem("ipl_groups") || "[]"); } catch { return []; }
 }
@@ -95,6 +111,7 @@ export default function LiveDraft() {
   const [wsError, setWsError] = useState("");
   const [confirmPick, setConfirmPick] = useState(null);
   const [myPlayer, setMyPlayer] = useState(null);
+  const [cricbuzzUrl, setCricbuzzUrl] = useState(null);
   const wsRef = useRef(null);
 
   // Determine which player we are
@@ -106,6 +123,12 @@ export default function LiveDraft() {
       const stored = localStorage.getItem(`ipl_player_${m.group_id}`);
       const role = searchParams.get("player") || stored || "player1";
       setMyPlayer(role);
+      // Use stored URL or look up from schedule
+      if (m.cricbuzz_url) {
+        setCricbuzzUrl(m.cricbuzz_url.replace("live-cricket-scorecard", "live-cricket-scores"));
+      } else {
+        lookupCricbuzzUrl(m.team_a, m.team_b).then(setCricbuzzUrl);
+      }
     }
     init();
   }, [matchId]);
@@ -180,9 +203,9 @@ export default function LiveDraft() {
               ? "Draft complete!"
               : `Pick ${draftState.pick_number} of ${draftState.draft_size * 2} · ${draftState.draft_size} each`}
           </span>
-          {match.cricbuzz_url && (
+          {cricbuzzUrl && (
             <a
-              href={match.cricbuzz_url.replace("live-cricket-scorecard", "live-cricket-scores")}
+              href={cricbuzzUrl}
               target="_blank"
               rel="noopener noreferrer"
               style={{ fontSize: 12, color: "var(--blue)", textDecoration: "none", border: "1px solid var(--blue)", borderRadius: 6, padding: "3px 9px", whiteSpace: "nowrap", marginLeft: 8 }}

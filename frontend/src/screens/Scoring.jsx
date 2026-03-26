@@ -15,10 +15,24 @@ export default function Scoring() {
   const [unmatched, setUnmatched] = useState([]);
 
   useEffect(() => {
-    getMatch(matchId).then((r) => {
+    getMatch(matchId).then(async (r) => {
       const m = r.data;
       setMatch(m);
-      if (m.cricbuzz_url) setUrl(m.cricbuzz_url);
+      if (m.cricbuzz_url) {
+        setUrl(m.cricbuzz_url);
+      } else {
+        // Look up scorecard URL from schedule by team names
+        try {
+          const api = (await import("../api")).default;
+          const res = await api.get("/ipl-matches");
+          const fixture = res.data.find(
+            (f) =>
+              (f.team_a === m.team_a && f.team_b === m.team_b) ||
+              (f.team_a === m.team_b && f.team_b === m.team_a)
+          );
+          if (fixture?.cricbuzz_scorecard_url) setUrl(fixture.cricbuzz_scorecard_url);
+        } catch {}
+      }
       // Init manual stats from existing picks
       const stats = {};
       m.picks.forEach((p) => {
