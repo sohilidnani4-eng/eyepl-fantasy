@@ -28,5 +28,8 @@ ENV PYTHONPATH=/app/backend
 
 EXPOSE 8000
 
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
 WORKDIR /app/backend
-CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}
+CMD ["/start.sh"]
