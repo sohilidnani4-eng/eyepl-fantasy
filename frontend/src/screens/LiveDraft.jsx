@@ -72,13 +72,13 @@ function MyOtherPicks({ currentGroupId, myRole }) {
     <div style={{ marginBottom: 8 }}>
       <button
         onClick={handleToggle}
-        style={{ width: "100%", textAlign: "left", background: "var(--card-bg,#fff)", border: "1px solid var(--border)", borderRadius: 8, padding: "8px 12px", cursor: "pointer", fontWeight: 600, fontSize: 13, display: "flex", justifyContent: "space-between" }}
+        style={{ width: "100%", textAlign: "left", background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8, padding: "8px 12px", cursor: "pointer", fontWeight: 600, fontSize: 13, display: "flex", justifyContent: "space-between" }}
       >
         <span>My picks from other groups</span>
         <span>{open ? "▲" : "▼"}</span>
       </button>
       {open && (
-        <div style={{ border: "1px solid var(--border)", borderTop: "none", borderRadius: "0 0 8px 8px", padding: "8px 12px", background: "var(--card-bg,#fff)" }}>
+        <div style={{ border: "1px solid var(--border)", borderTop: "none", borderRadius: "0 0 8px 8px", padding: "8px 12px", background: "var(--card)" }}>
           {picks === null
             ? <p style={{ fontSize: 13, color: "var(--muted)", margin: 0 }}>Loading...</p>
             : picks.length === 0
@@ -227,7 +227,7 @@ export default function LiveDraft() {
           </div>
           {draftState.can_undo === myPlayer && (
             <button
-              style={{ padding: "0 14px", borderRadius: 8, border: "1.5px solid var(--border)", background: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer", color: "var(--red)", whiteSpace: "nowrap" }}
+              style={{ padding: "0 14px", borderRadius: 8, border: "1.5px solid var(--border)", background: "var(--card)", fontSize: 13, fontWeight: 600, cursor: "pointer", color: "var(--red)", whiteSpace: "nowrap" }}
               onClick={() => wsRef.current?.send({ action: "undo" })}
             >
               ↩ Undo
@@ -347,7 +347,7 @@ export default function LiveDraft() {
           position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)",
           display: "flex", alignItems: "flex-end", zIndex: 100,
         }}>
-          <div style={{ background: "#fff", width: "100%", borderRadius: "16px 16px 0 0", padding: "24px 20px 36px" }}>
+          <div style={{ background: "var(--card)", width: "100%", borderRadius: "16px 16px 0 0", padding: "24px 20px 36px" }}>
             <p style={{ fontWeight: 700, fontSize: 17, marginBottom: 8 }}>Pick {confirmPick}?</p>
             <p className="muted" style={{ marginBottom: 20 }}>This can't be undone.</p>
             <div className="row">

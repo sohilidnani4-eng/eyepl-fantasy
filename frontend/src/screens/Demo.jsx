@@ -235,7 +235,7 @@ export default function Demo() {
 
       {confirmPick && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "flex-end", zIndex: 100 }}>
-          <div style={{ background: "#fff", width: "100%", borderRadius: "16px 16px 0 0", padding: "24px 20px 36px" }}>
+          <div style={{ background: "var(--card)", width: "100%", borderRadius: "16px 16px 0 0", padding: "24px 20px 36px" }}>
             <p style={{ fontWeight: 700, fontSize: 17, marginBottom: 8 }}>Pick {confirmPick.name}?</p>
             <p className="muted" style={{ marginBottom: 20 }}>{confirmPick.team} · {confirmPick.role}</p>
             <div className="row">
