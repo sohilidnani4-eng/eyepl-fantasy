@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { deleteGroup } from "../api";
+import { deleteGroup, getGroup } from "../api";
 
 function getSavedGroups() {
   try {
@@ -19,6 +19,20 @@ function removeSavedGroup(code) {
 export default function Home() {
   const navigate = useNavigate();
   const [groups, setGroups] = useState(getSavedGroups());
+  const [opponents, setOpponents] = useState({});
+
+  useEffect(() => {
+    const saved = getSavedGroups();
+    saved.forEach(async (g) => {
+      try {
+        const res = await getGroup(g.code);
+        const group = res.data;
+        const role = localStorage.getItem(`ipl_player_${g.code}`) || g.role;
+        const opponent = role === "player1" ? group.player2_name : group.player1_name;
+        setOpponents((prev) => ({ ...prev, [g.code]: opponent || null }));
+      } catch {}
+    });
+  }, []);
 
   async function handleDelete(e, code) {
     e.preventDefault();
@@ -61,26 +75,33 @@ export default function Home() {
       {groups.length > 0 && (
         <div className="group-list">
           <h3>Your Groups</h3>
-          {groups.map((g) => (
-            <Link key={g.code} className="group-item" to={`/group/${g.code}`} style={{ position: "relative" }}>
-              <div>
-                <div className="group-item-code">{g.code}</div>
-                <div className="group-item-names">{g.playerName}</div>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <span style={{ fontSize: 20 }}>›</span>
-                {g.role === "player1" && (
-                  <button
-                    onClick={(e) => handleDelete(e, g.code)}
-                    style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, color: "var(--red)", padding: "4px" }}
-                    title="Delete group"
-                  >
-                    🗑️
-                  </button>
-                )}
-              </div>
-            </Link>
-          ))}
+          {groups.map((g) => {
+            const opponent = opponents[g.code];
+            return (
+              <Link key={g.code} className="group-item" to={`/group/${g.code}`} style={{ position: "relative" }}>
+                <div>
+                  <div className="group-item-code">
+                    {opponent ? `vs ${opponent}` : `Room ${g.code}`}
+                  </div>
+                  <div className="group-item-names">
+                    {opponent ? `Room ${g.code} · You: ${g.playerName}` : g.playerName}
+                  </div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <span style={{ fontSize: 20 }}>›</span>
+                  {g.role === "player1" && (
+                    <button
+                      onClick={(e) => handleDelete(e, g.code)}
+                      style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, color: "var(--red)", padding: "4px" }}
+                      title="Delete group"
+                    >
+                      🗑️
+                    </button>
+                  )}
+                </div>
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>

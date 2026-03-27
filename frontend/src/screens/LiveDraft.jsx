@@ -209,7 +209,7 @@ export default function LiveDraft() {
               href={cricbuzzUrl}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ fontSize: 12, color: "var(--blue)", textDecoration: "none", border: "1px solid var(--blue)", borderRadius: 6, padding: "3px 9px", whiteSpace: "nowrap", marginLeft: 8 }}
+              style={{ fontSize: 12, color: "#fff", textDecoration: "none", border: "1px solid rgba(255,255,255,0.6)", borderRadius: 6, padding: "3px 9px", whiteSpace: "nowrap", marginLeft: 8 }}
             >
               Lineups ↗
             </a>
