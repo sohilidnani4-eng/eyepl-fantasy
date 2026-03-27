@@ -198,9 +198,20 @@ def _try_match(scraped: str, candidates: List[str]) -> Tuple[Optional[str], floa
             return c, 100.0
 
     # 2. Last name
+    scraped_parts = scraped.split()
     last_matches = [c for c in candidates if c.split()[-1].lower() == scraped_last]
     if len(last_matches) == 1:
-        return last_matches[0], 92.0
+        c = last_matches[0]
+        c_parts = c.split()
+        # If scraped is a full name (not just a surname), require first initials to match
+        # e.g. "Jitesh Sharma" must NOT match "Suyash Sharma"
+        if len(scraped_parts) >= 2 and len(c_parts) >= 2:
+            if scraped_parts[0][0].upper() != c_parts[0][0].upper():
+                last_matches = []  # first initials differ — don't use this match
+            else:
+                return c, 92.0
+        else:
+            return c, 92.0  # scraped is just a surname — safe to accept
     if len(last_matches) > 1:
         # Disambiguate with fuzzy
         res = fuzz_process.extractOne(scraped, last_matches, scorer=fuzz.token_sort_ratio)
