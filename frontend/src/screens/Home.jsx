@@ -50,26 +50,18 @@ export default function Home() {
         <span className="emoji">🏏 💰 🔮</span>
         <h1>EYEPL Pick Em</h1>
         <p>Pick well, it isn't all just luck!</p>
-      </div>
+        <p style={{ marginTop: 6 }}>Calculates game by game scores, keeps tally of runs & wickets.</p>
+        <p style={{ marginTop: 4 }}>Play with your mates.</p>
 
-      <div className="gap8">
-        <button className="btn btn-primary" onClick={() => navigate("/create")}>
-          Create Group
-        </button>
-        <button className="btn btn-primary" onClick={() => navigate("/join")}>
-          Join Group
-        </button>
-        {groups.length > 0 && (
-          <button className="btn btn-primary" onClick={() => navigate("/my-picks")}>
-            My Picks
-          </button>
-        )}
-        <button className="btn btn-primary" onClick={() => navigate("/venues")}>
-          Venue Stats
-        </button>
-        <button className="btn btn-secondary" onClick={() => navigate("/demo")} style={{ borderStyle: "dashed" }}>
-          Try Demo Draft
-        </button>
+        <div className="hero-buttons">
+          <button className="btn-hero" onClick={() => navigate("/create")}>Create Group</button>
+          <button className="btn-hero" onClick={() => navigate("/join")}>Join Group</button>
+          {groups.length > 0 && (
+            <button className="btn-hero" onClick={() => navigate("/my-picks")}>My Picks</button>
+          )}
+          <button className="btn-hero" onClick={() => navigate("/venues")}>Venue Stats</button>
+          <button className="btn-hero btn-hero-demo" onClick={() => navigate("/demo")}>Try Demo Draft</button>
+        </div>
       </div>
 
       {groups.length > 0 && (
