@@ -6,13 +6,13 @@
   --green: #34a853;
   --red: #ea4335;
   --orange: #fa7921;
-  --bg: #f5f5f5;
+  --bg: #f0f2f5;
   --card: #ffffff;
   --border: #e0e0e0;
   --text: #1a1a1a;
   --muted: #757575;
-  --radius: 12px;
-  --shadow: 0 2px 8px rgba(0,0,0,0.10);
+  --radius: 14px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
 
 html, body { height: 100%; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -32,9 +32,9 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .card { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); margin-bottom: 12px; }
 
 /* Buttons */
-.btn { display: block; width: 100%; padding: 16px; border: none; border-radius: var(--radius); font-size: 16px; font-weight: 600; cursor: pointer; text-align: center; transition: opacity 0.15s; min-height: 52px; }
-.btn:active { opacity: 0.8; }
-.btn-primary { background: var(--blue); color: #fff; }
+.btn { display: block; width: 100%; padding: 16px; border: none; border-radius: 50px; font-size: 16px; font-weight: 600; cursor: pointer; text-align: center; transition: transform 0.12s, opacity 0.15s; min-height: 52px; }
+.btn:active { opacity: 0.85; transform: scale(0.98); }
+.btn-primary { background: linear-gradient(135deg, #1a73e8, #0d47a1); color: #fff; box-shadow: 0 4px 14px rgba(26,115,232,0.35); }
 .btn-secondary { background: var(--card); color: var(--blue); border: 2px solid var(--blue); }
 .btn-danger { background: var(--red); color: #fff; }
 .btn-green { background: var(--green); color: #fff; }
@@ -59,15 +59,22 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .badge-gray { background: #f1f3f4; color: var(--muted); }
 
 /* Home screen */
-.home-hero { text-align: center; padding: 48px 0 32px; }
-.home-hero h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
-.home-hero p { color: var(--muted); font-size: 15px; }
-.home-hero .emoji { font-size: 56px; display: block; margin-bottom: 16px; }
+.home-hero {
+  text-align: center;
+  padding: 56px 24px 48px;
+  margin: -20px -16px 28px;
+  background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+  border-radius: 0 0 32px 32px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+.home-hero h1 { font-size: 30px; font-weight: 800; margin-bottom: 8px; color: #ffffff; letter-spacing: -0.5px; }
+.home-hero p { color: rgba(255,255,255,0.65); font-size: 15px; }
+.home-hero .emoji { font-size: 52px; display: block; margin-bottom: 16px; }
 
 /* Group list */
 .group-list { margin-top: 24px; }
 .group-list h3 { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
-.group-item { display: flex; align-items: center; justify-content: space-between; background: var(--card); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 8px; box-shadow: var(--shadow); cursor: pointer; text-decoration: none; color: var(--text); }
+.group-item { display: flex; align-items: center; justify-content: space-between; background: var(--card); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 10px; box-shadow: var(--shadow); cursor: pointer; text-decoration: none; color: var(--text); border-left: 4px solid var(--blue); }
 .group-item:active { opacity: 0.8; }
 .group-item-code { font-size: 18px; font-weight: 700; color: var(--blue); }
 .group-item-names { font-size: 13px; color: var(--muted); }

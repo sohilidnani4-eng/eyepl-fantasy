@@ -9,6 +9,7 @@ const api = axios.create({
 export const createGroup = (data) => api.post("/groups", data);
 export const joinGroup = (data) => api.post("/groups/join", data);
 export const getGroup = (code) => api.get(`/groups/${code}`);
+export const deleteGroup = (code) => api.delete(`/groups/${code}`);
 
 // Matches
 export const createMatch = (code, data) => api.post(`/groups/${code}/matches`, data);

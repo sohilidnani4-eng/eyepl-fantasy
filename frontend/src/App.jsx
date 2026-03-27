@@ -9,6 +9,7 @@ import Scoring from "./screens/Scoring";
 import MatchResult from "./screens/MatchResult";
 import MyPicks from "./screens/MyPicks";
 import Demo from "./screens/Demo";
+import Venues from "./screens/Venues";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/match/:matchId/result" element={<MatchResult />} />
         <Route path="/my-picks" element={<MyPicks />} />
         <Route path="/demo" element={<Demo />} />
+        <Route path="/venues" element={<Venues />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>

@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from database import get_db
-from models import Group, TournamentStanding
+from models import Group, Match, DraftPick, TournamentStanding
 from schemas import GroupCreate, GroupJoin, GroupOut
 
 router = APIRouter()
@@ -56,3 +56,19 @@ def get_group(code: str, db: Session = Depends(get_db)):
     if not group:
         raise HTTPException(status_code=404, detail="Group not found")
     return group
+
+
+@router.delete("/groups/{code}")
+def delete_group(code: str, db: Session = Depends(get_db)):
+    group = db.query(Group).filter(Group.id == code.upper().strip()).first()
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    # Delete all picks, matches, standings, then group
+    match_ids = [m.id for m in group.matches]
+    if match_ids:
+        db.query(DraftPick).filter(DraftPick.match_id.in_(match_ids)).delete(synchronize_session=False)
+        db.query(Match).filter(Match.group_id == group.id).delete(synchronize_session=False)
+    db.query(TournamentStanding).filter(TournamentStanding.group_id == group.id).delete(synchronize_session=False)
+    db.delete(group)
+    db.commit()
+    return {"detail": "Group deleted"}

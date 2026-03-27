@@ -111,6 +111,7 @@ export default function LiveDraft() {
   const [wsError, setWsError] = useState("");
   const [confirmPick, setConfirmPick] = useState(null);
   const [myPlayer, setMyPlayer] = useState(null);
+  const [allExpanded, setAllExpanded] = useState(false);
   const [cricbuzzUrl, setCricbuzzUrl] = useState(null);
   const wsRef = useRef(null);
 
@@ -280,50 +281,63 @@ export default function LiveDraft() {
         <MyOtherPicks currentGroupId={match.group_id} myRole={myPlayer} />
       )}
 
-      {/* Available players */}
+      {/* Available players — two columns, one per team */}
       {!isDone && (
-        <div className="player-list">
+        <div>
           <div className="player-list-header">
             {ROLES.map((r) => (
               <button
                 key={r}
                 className={`filter-btn ${roleFilter === r ? "active" : ""}`}
-                onClick={() => setRoleFilter(r)}
+                onClick={() => { setRoleFilter(r); if (r !== "All") setAllExpanded(false); }}
               >
                 {r}
               </button>
             ))}
           </div>
 
-          {Object.entries(byTeam).map(([team, players]) => (
-            <div key={team}>
-              <div style={{ padding: "8px 14px 4px", fontSize: 11, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase", borderBottom: "1px solid var(--border)", background: "var(--bg)" }}>
-                {team}
-              </div>
-              {players.map((p) => {
-                const isPicked = allPicked.has(p.name);
-                const pickedByP1 = draftState.player1_picks.find((x) => x.name === p.name);
-                const pickedByP2 = draftState.player2_picks.find((x) => x.name === p.name);
-                return (
-                  <div
-                    key={p.name}
-                    className={`player-row ${isPicked ? "picked" : ""}`}
-                    onClick={() => !isPicked && handlePickClick(p.name)}
-                  >
-                    <div className="player-info">
-                      <div className="name">{p.name}</div>
-                      <div className="meta">{p.role}</div>
-                    </div>
-                    {isPicked && (
-                      <span className="picked-by-label">
-                        {pickedByP1 ? (myPlayer === "player1" ? "You" : "Opponent") : (myPlayer === "player2" ? "You" : "Opponent")}
-                      </span>
-                    )}
+          {roleFilter === "All" && (
+            <button
+              onClick={() => setAllExpanded((v) => !v)}
+              style={{ width: "100%", textAlign: "center", padding: "8px", fontSize: 13, fontWeight: 600, background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 8, marginTop: 8, cursor: "pointer", color: "var(--muted)" }}
+            >
+              {allExpanded ? "▲ Hide all players" : "▼ Show all players"}
+            </button>
+          )}
+
+          {(roleFilter !== "All" || allExpanded) && (
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 0, border: "1px solid var(--border)", borderRadius: 8, marginTop: 8 }}>
+              {Object.entries(byTeam).map(([team, players], colIdx) => (
+                <div key={team} style={{ borderLeft: colIdx === 1 ? "1px solid var(--border)" : "none" }}>
+                  <div style={{ padding: "6px 10px", fontSize: 11, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase", background: "var(--bg)", borderBottom: "1px solid var(--border)", textAlign: "center" }}>
+                    {team}
                   </div>
-                );
-              })}
+                  {players.map((p) => {
+                    const isPicked = allPicked.has(p.name);
+                    const pickedByP1 = draftState.player1_picks.find((x) => x.name === p.name);
+                    return (
+                      <div
+                        key={p.name}
+                        className={`player-row ${isPicked ? "picked" : ""}`}
+                        onClick={() => !isPicked && handlePickClick(p.name)}
+                        style={{ padding: "8px 10px", borderBottom: "1px solid var(--border)" }}
+                      >
+                        <div className="player-info">
+                          <div className="name" style={{ fontSize: 13 }}>{p.name}</div>
+                          <div className="meta" style={{ fontSize: 11 }}>{p.role}</div>
+                        </div>
+                        {isPicked && (
+                          <span className="picked-by-label" style={{ fontSize: 10 }}>
+                            {pickedByP1 ? (myPlayer === "player1" ? "You" : "Opp") : (myPlayer === "player2" ? "You" : "Opp")}
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
       )}
 
